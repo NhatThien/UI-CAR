@@ -10,6 +10,8 @@ let can = require('socketcan');
 let _ = require('c-struct');
 let canStruct = require('./can-struct.js');
 canStruct.init();
+
+//initialiser la commnuincation avec le CAN via can0
 let channel = can.createRawChannel("can0", true);
 
 app.use(express.static(__dirname + '/dashboard'));
@@ -27,6 +29,7 @@ let connections = [];
 
 io.on('connection', handleConnection);
 
+//traiter les commandes du serveur web
 function handleConnection(client) {
     connections.push(client);
     console.log("Connected");
@@ -44,7 +47,11 @@ function handleConnection(client) {
 }
 
 
-/*Gestion CAN*/
+/*Gestion CAN
+	- Recevoir messages via can0
+	- Structurer ces messages en package en fonction de leur id
+	- Appeller les fonctions correspondantes pour envoyer les informations au navigateur.
+*/
 function parseCanMsg(canMsg){
 	if(canMsg.id===272){ // message us avant
 		let obj = _.unpackSync('US_AV', canMsg.data);
@@ -82,7 +89,7 @@ function parseCanMsg(canMsg){
 	}
 }
 
-
+//structure du message de CAN correspondante à sa fonction
 _.register('US_AV', canStruct.paquet_us);
 _.register('US_AR', canStruct.paquet_us);
 _.register('DIST', canStruct.paquet_distance);
@@ -94,7 +101,6 @@ _.register('OTHER', canStruct.paquet_divers);
 
 channel.addListener("onMessage", (msg)=> { 
 	parseCanMsg(msg);
-	
 });
 
 
