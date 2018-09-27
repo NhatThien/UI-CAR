@@ -30,10 +30,13 @@ Pour se connecter à la Raspberry Pi, vous aurez besoin de créer un accès via 
 depuis un PC d'une salle informatique utilisez la commande :
 
 ```
-ssh pi@10.105.1.x
+ssh pi@1x.x.x.x
 ```
 
-avec x le numéro sur le boitier de la Raspberry Pi.
+avec x.x.x.x: IP addresse de RasPi, qui peut être trouvé par la commande suivant:
+```
+hostname -I
+```
 Le mot de passe est : insa.
 
 # Exécution et installation du serveur nodejs
@@ -58,5 +61,9 @@ puis installer les dépendances en lançant depuis le répertoire UI-CAR la comm
 ```
 npm install -save
 ```
+# Connexion au serveur nodejs
+Lancer un navigateur sur un PC et indiquer l’adresse de la raspberry sur le port 3000 dans
+la barre d’adresse, par exemple 10.105.1.2 :3000. Vous pouvez ensuite, depuis le moniteur,
+lancer différents ordres pour contrôler l’application en cliquant sur les différents boutons ou recevoir les informations de la voiture.
 
 
